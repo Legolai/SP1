@@ -6,8 +6,8 @@ class DiceCup {
     dice = new ArrayList<Die>();
   }
 
-  void addDice(color dieColor, color eyesColor) {
-    dice.add(new Die(dieColor, eyesColor));
+  void addDice(Die die) {
+    dice.add(die);
   }
 
   void shake() {
@@ -16,8 +16,12 @@ class DiceCup {
 
   void draw(int x, int y, int size) {
     int padding = size + size/2;
-    for (int i = 0; i < dice.size(); i++) {
-      dice.get(i).draw(x + padding*i, y, size);
+    int row = 0;
+    int column = 0;
+    for (Die die : dice) {
+      if(x + padding*column >= width){column = 0; row++;}
+      die.draw(x + padding*column, y+padding*row, size);
+      column++;
     }
   }
 
@@ -50,12 +54,13 @@ class DiceCup {
         emptyRows--;
         continue;
       }
+      int column = 0;
       // Tegner hver terningen i rækker og breaker når den sidst er tegnet
       for (int j = 0; j < table[i].length; j++) {
-        if (table[i][j] == null) {
-          break;
-        }
-        table[i][j].draw(x+padding*j, y+padding*(i + emptyRows), size);
+        if (table[i][j] == null) {break;}
+        if(x+padding*column >= width ){emptyRows++; column=0;}
+        table[i][j].draw(x+padding*column, y+padding*(i + emptyRows), size);
+        column++;
       }
     }
   }
@@ -67,12 +72,8 @@ class DiceCup {
     int nextLine = -1;
     int column = 0;
     for (Die die : dice) {
-      if (die.getValue() != currentNum) {
-        currentNum = die.getValue();
-        nextLine++;
-        column = 0;
-      }
-      if(x+padding*column >= width ){nextLine++; column = 0;}
+      if(die.getValue() != currentNum || x+padding*column >= width ){nextLine++; column = 0;}
+      if (die.getValue() != currentNum) {currentNum = die.getValue();} 
       die.draw(x+padding*column, y+padding*nextLine, size);
       column++;
     }

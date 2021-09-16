@@ -7,7 +7,7 @@ void setup() {
   dieSize = width/dieSize*3;
   player = new DiceCup();
   for (int i = 0; i < numOfDice; i++) {
-    player.addDice(color(random(255),random(255),random(255)), color(random(255),random(255),random(255)));
+    player.addDice(new Die(color(random(255),random(255),random(255)), color(random(255),random(255),random(255))));
   }
   // player.shake();
 }

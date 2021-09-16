@@ -19,9 +19,11 @@ class Die {
 
   void draw(int x, int y, int size) {
     rectMode(CENTER);
+    stroke(0);
     fill(dieColor);
     rect(x, y, size, size);
     fill(eyesColor);
+    stroke(eyesColor);
     drawEyes(x, y, size);
   }
   
